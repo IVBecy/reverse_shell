@@ -1,2 +1,2 @@
-# reverse_shell
-A reverse shell in Python
+# Reverse Shell
+A reverse shell written in Python.
