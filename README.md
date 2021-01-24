@@ -1,7 +1,14 @@
 # Reverse Shell
 A reverse shell written in Python.
 
-**Note**: Change the IP to your IP, in the **client.py** file, also this script has only been tested on a LAN.
+# How to use it:
+- 1: Go to `client.py` and change the **IP** and **PORT** so that the script will connect to your server.
+- 2: Start up `server.py`
+- 3: Run `client.py` on the victim's machine if pip and packages are installed. If not just run `run.sh`.
 
-# Preview
-![preview](shell.PNG)
+# Libraries:
+- socket.py
+- sys
+- os
+- subprocess
+To install every package, just run `pip install -r requirements.txt`
